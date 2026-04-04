@@ -3,35 +3,6 @@
 An enterprise-grade, locally-hosted platform that deeply parses your resume, cross-references it with target job descriptions, and provides actionable intelligence to boost your ATS compatibility and secure FAANG-tier interviews.
 
 ---
-
-## 📸 Platform Showcase
-
-### 1. The Dashboard (Instant Analysis)
-Get a comprehensive 0-100 score, immediately identifying how well you map against your target role.
-![Dashboard Hero](docs/screenshots/01_dashboard_hero.png)
-
-### 2. Missing Skills & Priority Task Queue
-Actionable steps categorized by severity (High/Medium/Low) highlighting exact technical or soft skills missing from your resume context.
-![Score Analysis & Tasks](docs/screenshots/02_score_analysis.png)
-
-### 3. Competency Matrix & Salary Intel
-A radar chart visualizing your strengths (Frontend vs Backend vs System Design) alongside a data-driven projected FAANG salary band based on your extracted seniority.
-![Charts & Salary Analysis](docs/screenshots/03_charts_salary.png)
-
-### 4. Advanced Keyword & Action Verb Tracking
-Detects passive vs. strong action verbs to ensure your bullet points lead with impact. Also provides intelligent career trajectory recommendations.
-![Skills & Action Verbs](docs/screenshots/04_skills_verbs.png)
-
-### 5. Premium Dark Mode
-Sleek, eye-protective dark mode available out of the box with dynamic theme switching.
-![Dark Mode UI](docs/screenshots/05_dark_mode.png)
-
-### 6. Version History & Score Deltas
-Track your resume optimizations over time, seeing exactly how many score points you gained and what skills you successfully added to beat the ATS.
-![Version History Engine](docs/screenshots/06_version_history.png)
-
----
-
 ## ✨ Features
 
 - **Advanced PDF Parsing:** Utilizes robust buffer-level extraction with dynamic fallbacks to perfectly read highly complex PDF layouts.
@@ -58,6 +29,33 @@ Track your resume optimizations over time, seeing exactly how many score points 
 - `pdf-parse` (v2 API for high-accuracy text extraction)
 - Multer (in-memory file handling)
 - Zod (Type-safe input validation)
+
+---
+## 📸 Platform Showcase
+
+### 1. The Dashboard (Instant Analysis)
+Get a comprehensive 0-100 score, immediately identifying how well you map against your target role.
+![Dashboard Hero](docs/screenshots/01_dashboard_hero.png)
+
+### 2. Missing Skills & Priority Task Queue
+Actionable steps categorized by severity (High/Medium/Low) highlighting exact technical or soft skills missing from your resume context.
+![Score Analysis & Tasks](docs/screenshots/02_score_analysis.png)
+
+### 3. Competency Matrix & Salary Intel
+A radar chart visualizing your strengths (Frontend vs Backend vs System Design) alongside a data-driven projected FAANG salary band based on your extracted seniority.
+![Charts & Salary Analysis](docs/screenshots/03_charts_salary.png)
+
+### 4. Advanced Keyword & Action Verb Tracking
+Detects passive vs. strong action verbs to ensure your bullet points lead with impact. Also provides intelligent career trajectory recommendations.
+![Skills & Action Verbs](docs/screenshots/04_skills_verbs.png)
+
+### 5. Premium Dark Mode
+Sleek, eye-protective dark mode available out of the box with dynamic theme switching.
+![Dark Mode UI](docs/screenshots/05_dark_mode.png)
+
+### 6. Version History & Score Deltas
+Track your resume optimizations over time, seeing exactly how many score points you gained and what skills you successfully added to beat the ATS.
+![Version History Engine](docs/screenshots/06_version_history.png)
 
 ---
 
