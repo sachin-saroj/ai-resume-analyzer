@@ -1,0 +1,15 @@
+{
+  "name": "ai-resume-analyzer-pro",
+  "version": "1.0.0",
+  "description": "Elite Career Intelligence Platform",
+  "scripts": {
+    "install-all": "cd server && npm install && cd ../client && npm install",
+    "start-server": "cd server && npm start",
+    "dev-server": "cd server && npm run dev",
+    "start-client": "cd client && npm run dev",
+    "dev": "concurrently \"npm run dev-server\" \"npm run start-client\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "bands": {
+    "L3_Entry": { "label": "L3 / Entry-Level", "min": 85000, "max": 130000, "median": 110000 },
+    "L4_MidLevel": { "label": "L4 / Mid-Level", "min": 130000, "max": 200000, "median": 165000 },
+    "L5_Senior": { "label": "L5 / Senior", "min": 200000, "max": 320000, "median": 260000 },
+    "L6_Staff": { "label": "L6 / Staff", "min": 320000, "max": 480000, "median": 390000 },
+    "L7_Principal": { "label": "L7 / Principal", "min": 450000, "max": 700000, "median": 550000 }
+  },
+  "skillMultipliers": {
+    "AI & Data Science": 1.25,
+    "Cloud & DevOps": 1.15,
+    "Backend Development": 1.10,
+    "Frontend Development": 1.00,
+    "Database & Storage": 1.05,
+    "Core Computer Science": 1.00,
+    "Uncategorized": 0.95
+  },
+  "locationMultipliers": {
+    "Bay Area": 1.30,
+    "NYC": 1.20,
+    "Seattle": 1.15,
+    "Austin": 1.00,
+    "Remote US": 0.95,
+    "International": 0.80
+  },
+  "seniorityMapping": {
+    "0-2": "L3_Entry",
+    "2-5": "L4_MidLevel",
+    "5-10": "L5_Senior",
+    "10-15": "L6_Staff",
+    "15+": "L7_Principal"
+  }
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { width: 360px; font-family: 'Inter', -apple-system, sans-serif; background: #0f172a; color: #e2e8f0; }
+    .header { padding: 20px; background: linear-gradient(135deg, #6366f1, #8b5cf6); text-align: center; }
+    .header h1 { font-size: 16px; font-weight: 800; color: white; }
+    .header p { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 4px; }
+    .content { padding: 16px; }
+    .btn { width: 100%; padding: 12px; background: #6366f1; border: none; color: white; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; margin-bottom: 8px; }
+    .btn:hover { background: #4f46e5; }
+    .btn-secondary { background: #1e293b; border: 1px solid #334155; }
+    .btn-secondary:hover { background: #334155; }
+    .status { padding: 12px; background: #1e293b; border-radius: 10px; margin-top: 12px; font-size: 12px; text-align: center; color: #94a3b8; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>⚡ ResumeAI PRO</h1>
+    <p>Elite Career Intelligence</p>
+  </div>
+  <div class="content">
+    <button class="btn" id="analyzeBtn">Analyze Current Page JD</button>
+    <button class="btn btn-secondary" id="openDashboard">Open Full Dashboard</button>
+    <div class="status" id="status">
+      Ready to scan job descriptions from LinkedIn, Indeed, or Glassdoor.
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

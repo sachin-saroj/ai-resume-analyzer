@@ -1,0 +1,57 @@
+{
+  "profile": {
+    "name": "Alex Thompson",
+    "headline": "Senior Software Engineer at Amazon | Full Stack | Cloud Architecture",
+    "location": "Seattle, WA",
+    "connections": 1247,
+    "email": "alex.thompson@email.com",
+    "phone": "+1-206-555-0142"
+  },
+  "experience": [
+    {
+      "title": "Senior Software Engineer",
+      "company": "Amazon Web Services",
+      "duration": "Jan 2022 - Present",
+      "description": "Architected microservices handling 10M+ daily requests. Led migration from monolith to distributed system reducing latency by 40%.",
+      "technologies": ["Node.js", "AWS", "Docker", "Kubernetes", "PostgreSQL"]
+    },
+    {
+      "title": "Software Engineer II",
+      "company": "Microsoft",
+      "duration": "Jun 2019 - Dec 2021",
+      "description": "Developed real-time collaboration features for Teams. Implemented WebSocket infrastructure serving 5M concurrent users.",
+      "technologies": ["TypeScript", "React", "C#", ".NET", "Azure"]
+    },
+    {
+      "title": "Junior Developer",
+      "company": "Startup XYZ",
+      "duration": "Aug 2017 - May 2019",
+      "description": "Built full-stack web applications using React and Node.js. Designed and implemented RESTful APIs.",
+      "technologies": ["JavaScript", "React", "Node.js", "MongoDB"]
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.S. Computer Science",
+      "institution": "University of Washington",
+      "year": "2017"
+    }
+  ],
+  "skills": [
+    "JavaScript", "TypeScript", "React", "Node.js", "Python",
+    "AWS", "Docker", "Kubernetes", "PostgreSQL", "MongoDB",
+    "Redis", "GraphQL", "System Design", "Microservices",
+    "CI/CD", "Terraform", "Git"
+  ],
+  "certifications": [
+    "AWS Solutions Architect - Professional",
+    "Google Cloud Professional Cloud Architect"
+  ],
+  "endorsements": {
+    "JavaScript": 99,
+    "React": 87,
+    "Node.js": 92,
+    "AWS": 78,
+    "System Design": 65
+  }
+}
