@@ -5,7 +5,6 @@ An enterprise-grade, locally-hosted platform that deeply parses your resume, cro
 ---
 
 <p align="center">
-  
 ![React](https://img.shields.io/badge/React-18.x-424242?style=flat&logo=react&logoColor=61DAFB&color=20232A)
 ![Node.js](https://img.shields.io/badge/Node.js-v18+-424242?style=flat&logo=node.js&logoColor=white&color=339933)
 ![Platform](https://img.shields.io/badge/Platform-Web-424242?style=flat&color=0078D4)
