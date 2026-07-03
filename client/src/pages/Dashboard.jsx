@@ -94,7 +94,8 @@ const Dashboard = () => {
 
   const scoreData = result?.data?.scores || {};
   const overall = scoreData.overallScore || 0;
-  const radarData = scoreData.radar || [];
+  // Fix console warning for undefined radar data
+  const radarData = (scoreData.radar || []).map(item => ({ ...item, A: item.A || 0 }));
   const mkt = result?.data?.marketInsights || {};
   const verbData = result?.data?.verbAnalysis || {};
   const extracted = result?.data?.extractedData?.resume || {};
