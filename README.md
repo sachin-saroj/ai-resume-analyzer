@@ -129,6 +129,7 @@ The application will spin up at:
 
 
 ## Changelog
+- **[#23]** Add test coverage assertion for skill categorizations
 - **[#21]** Improve timeout handling for client API requests
 - **[#19]** Add console logs for resume parser performance telemetry
 - **[#17]** Refactor Auth error alerts to use inline visual banners
