@@ -6,7 +6,8 @@ const {
   generateCoverLetter,
   getVersionHistory,
   syncLinkedIn,
-  getUserPoints
+  getUserPoints,
+  rescoreAnalysis
 } = require('../controllers/analysisController');
 const authMiddleware = require('../middlewares/auth');
 const { secureUpload } = require('../middlewares/fileValidator');
@@ -19,6 +20,9 @@ router.get('/:id/export', authMiddleware, downloadExcel);
 
 // Generate Cover Letter
 router.get('/:id/cover-letter', authMiddleware, generateCoverLetter);
+
+// Rescore (Apply Live Patch)
+router.post('/:id/rescore', authMiddleware, rescoreAnalysis);
 
 // Version History
 router.get('/history/versions', authMiddleware, getVersionHistory);

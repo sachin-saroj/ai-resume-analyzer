@@ -369,3 +369,182 @@ exports.getUserPoints = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+// ============================================
+// RESCORE / APPLY LIVE PATCH
+// ============================================
+exports.rescoreAnalysis = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { repairText } = req.body;
+    const userId = req.user.id;
+    const mongoose = require('mongoose');
+
+    if (!repairText) {
+      return res.status(400).json({ success: false, message: 'Repair text is required' });
+    }
+
+    const dbConnected = mongoose.connection.readyState === 1;
+    let analysisDoc;
+
+    if (dbConnected) {
+      analysisDoc = await Analysis.findOne({ _id: id, userId });
+    } else {
+      analysisDoc = global.EXAM_MEMORY_STORE[id];
+      if (analysisDoc && String(analysisDoc.userId) !== String(userId)) {
+        analysisDoc = null;
+      }
+    }
+
+    if (!analysisDoc) {
+      return res.status(404).json({ success: false, message: 'Analysis record not found' });
+    }
+
+    // Parse skills from the patch text
+    const { extractSkills } = require('../services/parsing/localExtractor');
+    const newSkills = extractSkills(repairText);
+
+    if (newSkills.length === 0) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'No matching skills found in the patch text. Make sure to specify technical skills (e.g. AWS, Docker, Kubernetes).' 
+      });
+    }
+
+    // Append new skills while avoiding duplicates
+    const existingSkills = new Set((analysisDoc.extractedData?.resume?.skills || []).map(s => s.toLowerCase()));
+    const skillsToAppend = [];
+    newSkills.forEach(skill => {
+      if (!existingSkills.has(skill.toLowerCase())) {
+        analysisDoc.extractedData.resume.skills.push(skill);
+        skillsToAppend.push(skill);
+      }
+    });
+
+    if (skillsToAppend.length === 0) {
+      return res.status(200).json({ 
+        success: true, 
+        message: 'All specified skills were already present in your profile.',
+        data: analysisDoc,
+        points: global.USER_POINTS[userId] || 0
+      });
+    }
+
+    // Re-run matching and scoring pipelines
+    const { extractStructuredJD } = require('../services/parsing/localExtractor');
+    const { calculateSemanticMatrix } = require('../services/analysis/semanticMatching');
+    const { simulateATS } = require('../services/analysis/atsSimulation');
+    const { generateDynamicScore } = require('../services/analysis/scoringEngine');
+    const { generateInsights } = require('../services/analysis/insightsEngine');
+    const { calculatePercentile } = require('../metrics/benchmarkEngine');
+
+    const parsedJD = extractStructuredJD(analysisDoc.jobDescriptionText);
+    const parsedResume = analysisDoc.extractedData.resume;
+
+    const embeddingsMap = {};
+    [...parsedResume.skills, ...parsedJD.criticalSkills, ...parsedJD.secondarySkills].forEach(skill => {
+      embeddingsMap[skill.toLowerCase()] = null;
+    });
+
+    const semanticMatches = calculateSemanticMatrix(
+      parsedResume.skills,
+      parsedJD.criticalSkills,
+      embeddingsMap
+    );
+
+    const atsResults = simulateATS(parsedResume, parsedJD);
+    const dynamicScore = generateDynamicScore(semanticMatches, atsResults, parsedJD, parsedResume);
+    const insights = generateInsights(atsResults, semanticMatches, dynamicScore.reasoning);
+    const benchmark = calculatePercentile(dynamicScore.overallScore);
+
+    // Recalculate category-level scores for radar/competency matrix
+    const resumeCategories = {};
+    parsedResume.skills.forEach(skill => {
+      const { categorizeSkill } = require('../services/ontology/skillOntology');
+      const cat = categorizeSkill(skill);
+      if (!resumeCategories[cat]) resumeCategories[cat] = [];
+      resumeCategories[cat].push(skill);
+    });
+
+    const jdCategories = {};
+    parsedJD.criticalSkills.concat(parsedJD.secondarySkills).forEach(skill => {
+      const { categorizeSkill } = require('../services/ontology/skillOntology');
+      const cat = categorizeSkill(skill);
+      if (!jdCategories[cat]) jdCategories[cat] = [];
+      jdCategories[cat].push(skill);
+    });
+
+    const categoryScores = {};
+    for (const cat of new Set([...Object.keys(resumeCategories), ...Object.keys(jdCategories)])) {
+      const resumeCount = (resumeCategories[cat] || []).length;
+      const jdCount = (jdCategories[cat] || []).length;
+      categoryScores[cat] = jdCount > 0 ? Math.min(100, Math.round((resumeCount / jdCount) * 100)) : 100;
+    }
+
+    const radarCategories = ['Frontend Development', 'Backend Development', 'Database & Storage', 'Cloud & DevOps', 'AI & Data Science', 'Core Computer Science'];
+    const radarData = radarCategories.map(cat => ({
+      subject: cat.replace(' Development', '').replace(' & ', '/'),
+      A: categoryScores[cat] || 0,
+      fullMark: 100
+    }));
+
+    // Update document values
+    analysisDoc.scores = {
+      overallScore: dynamicScore.overallScore,
+      atsScore: atsResults.atsScore,
+      confidenceScore: dynamicScore.confidenceScore,
+      breakdown: dynamicScore.breakdown,
+      radar: radarData
+    };
+    analysisDoc.benchmarking = benchmark;
+    analysisDoc.suggestions.missingSkills = parsedJD.criticalSkills.filter(s => 
+      !parsedResume.skills.map(rs => rs.toLowerCase()).includes(s.toLowerCase())
+    );
+    analysisDoc.suggestions.reasoning = dynamicScore.reasoning;
+    analysisDoc.insights = {
+      topIssues: insights.topIssues,
+      quickWins: insights.quickWins,
+      priorityInsights: insights.priorityInsights
+    };
+
+    // Save
+    if (dbConnected) {
+      await Analysis.findByIdAndUpdate(id, {
+        $set: {
+          extractedData: analysisDoc.extractedData,
+          scores: analysisDoc.scores,
+          benchmarking: analysisDoc.benchmarking,
+          suggestions: analysisDoc.suggestions,
+          insights: analysisDoc.insights
+        }
+      });
+    } else {
+      global.EXAM_MEMORY_STORE[id] = analysisDoc;
+    }
+
+    // Award gamification points (+5 career points for applying patch)
+    if (!global.USER_POINTS[userId]) global.USER_POINTS[userId] = 0;
+    global.USER_POINTS[userId] += 5;
+
+    // Sync version history entry
+    if (global.VERSION_HISTORY[userId]) {
+      const historyIndex = global.VERSION_HISTORY[userId].findIndex(h => String(h.id) === String(id));
+      if (historyIndex !== -1) {
+        global.VERSION_HISTORY[userId][historyIndex].overallScore = dynamicScore.overallScore;
+        global.VERSION_HISTORY[userId][historyIndex].atsScore = atsResults.atsScore;
+        global.VERSION_HISTORY[userId][historyIndex].skills = parsedResume.skills;
+      }
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `Successfully integrated ${skillsToAppend.length} skills! Score updated to ${dynamicScore.overallScore}/100.`,
+      analysisId: analysisDoc._id,
+      data: analysisDoc,
+      points: global.USER_POINTS[userId]
+    });
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

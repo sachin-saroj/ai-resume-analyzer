@@ -79,10 +79,24 @@ export const AnalysisProvider = ({ children }) => {
     return res.data;
   }, []);
 
+  const applyLivePatch = useCallback(async (analysisId, repairText) => {
+    try {
+      const res = await axios.post(`${API}/analysis/${analysisId}/rescore`, { repairText });
+      if (res.data.success) {
+        setResult(res.data);
+        if (res.data.points) setPoints(res.data.points);
+      }
+      return res.data;
+    } catch (e) {
+      const msg = e.response?.data?.message || e.message || 'Patch failed';
+      throw new Error(msg);
+    }
+  }, []);
+
   return (
     <AnalysisContext.Provider value={{
       analyzing, result, error, points, history, linkedinData,
-      runAnalysis, downloadExcel, getCoverLetter, fetchHistory, fetchPoints, syncLinkedIn,
+      runAnalysis, downloadExcel, getCoverLetter, fetchHistory, fetchPoints, syncLinkedIn, applyLivePatch,
       setResult
     }}>
       {children}

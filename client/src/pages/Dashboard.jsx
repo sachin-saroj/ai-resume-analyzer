@@ -7,7 +7,7 @@ import { useAnalysis } from '../context/AnalysisContext';
 
 const Dashboard = () => {
   const { darkMode } = useTheme();
-  const { analyzing, result, error, runAnalysis, downloadExcel, getCoverLetter, syncLinkedIn, linkedinData } = useAnalysis();
+  const { analyzing, result, error, runAnalysis, downloadExcel, getCoverLetter, syncLinkedIn, linkedinData, applyLivePatch } = useAnalysis();
 
   const [file, setFile] = useState(null);
   const [jd, setJd] = useState('');
@@ -16,7 +16,6 @@ const Dashboard = () => {
   const [repairMode, setRepairMode] = useState(false);
   const [repairText, setRepairText] = useState('');
   const [repairing, setRepairing] = useState(false);
-  const [scoreBoost, setScoreBoost] = useState(0);
 
   const [showCoverLetter, setShowCoverLetter] = useState(false);
   const [coverLetterText, setCoverLetterText] = useState('');
@@ -31,7 +30,7 @@ const Dashboard = () => {
 
   const handleAnalysis = async () => {
     if (!file || !jd) { alert("Please upload a resume and paste a job description."); return; }
-    setScoreBoost(0); setRepairMode(false);
+    setRepairMode(false);
     try {
       await runAnalysis(file, jd);
     } catch (e) {
@@ -78,16 +77,23 @@ const Dashboard = () => {
     finally { setLinkedinSyncing(false); }
   };
 
-  const runQuickFix = () => {
+  const runQuickFix = async () => {
+    if (!repairText.trim()) return;
     setRepairing(true);
-    setTimeout(() => {
-      setScoreBoost(Math.floor(Math.random() * 8) + 5);
-      setRepairing(false); setRepairMode(false); setRepairText('');
-    }, 1500);
+    try {
+      const response = await applyLivePatch(result.analysisId, repairText);
+      alert(response.message);
+      setRepairMode(false);
+      setRepairText('');
+    } catch (err) {
+      alert(err.message || 'Failed to apply patch');
+    } finally {
+      setRepairing(false);
+    }
   };
 
   const scoreData = result?.data?.scores || {};
-  const overall = Math.min((scoreData.overallScore || 0) + scoreBoost, 100);
+  const overall = scoreData.overallScore || 0;
   const radarData = scoreData.radar || [];
   const mkt = result?.data?.marketInsights || {};
   const verbData = result?.data?.verbAnalysis || {};
