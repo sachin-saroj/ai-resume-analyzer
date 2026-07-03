@@ -109,7 +109,7 @@ exports.startAnalysis = async (req, res) => {
     const atsResults = simulateATS(parsedResume, parsedJD);
 
     // ---- STEP 6: Dynamic Scoring ----
-    const dynamicScore = generateDynamicScore(semanticMatches, atsResults, parsedJD);
+    const dynamicScore = generateDynamicScore(semanticMatches, atsResults, parsedJD, parsedResume);
 
     // ---- STEP 7: Insights Engine ----
     const insights = generateInsights(atsResults, semanticMatches, dynamicScore.reasoning);
