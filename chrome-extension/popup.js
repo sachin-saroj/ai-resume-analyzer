@@ -18,6 +18,28 @@ document.getElementById('analyzeBtn').addEventListener('click', async () => {
   }
 });
 
+// Load saved connection settings on load
+const dashboardUrlInput = document.getElementById('dashboardUrlInput');
+chrome.storage.local.get(['dashboardUrl'], (res) => {
+  if (res.dashboardUrl) {
+    dashboardUrlInput.value = res.dashboardUrl;
+  }
+});
+
+// Save connection settings on input change
+dashboardUrlInput.addEventListener('input', (e) => {
+  chrome.storage.local.set({ dashboardUrl: e.target.value });
+});
+
+// Toggle connection settings visibility
+document.getElementById('toggleSettings').addEventListener('click', () => {
+  const settingsSection = document.getElementById('settingsSection');
+  settingsSection.style.display = settingsSection.style.display === 'none' ? 'block' : 'none';
+});
+
 document.getElementById('openDashboard').addEventListener('click', () => {
-  chrome.tabs.create({ url: 'http://localhost:5173' });
+  chrome.storage.local.get(['dashboardUrl'], (res) => {
+    const url = res.dashboardUrl || 'http://localhost:5173';
+    chrome.tabs.create({ url });
+  });
 });

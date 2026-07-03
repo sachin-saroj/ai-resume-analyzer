@@ -27,6 +27,13 @@
     <div class="status" id="status">
       Ready to scan job descriptions from LinkedIn, Indeed, or Glassdoor.
     </div>
+    
+    <!-- Connection Settings -->
+    <div id="settingsSection" style="margin-top: 12px; display: none; border-top: 1px solid #334155; padding-top: 12px;">
+      <label style="font-size: 10px; color: #94a3b8; display: block; margin-bottom: 4px;">Dashboard URL:</label>
+      <input type="text" id="dashboardUrlInput" placeholder="http://localhost:5173" style="width: 100%; padding: 6px 10px; background: #1e293b; border: 1px solid #334155; color: white; border-radius: 6px; font-size: 11px; margin-bottom: 8px;" />
+    </div>
+    <button class="btn btn-secondary" id="toggleSettings" style="padding: 6px; font-size: 10px; margin-top: 8px; width: 100%; border-radius: 8px;">⚙️ Connection Settings</button>
   </div>
   <script src="popup.js"></script>
 </body>

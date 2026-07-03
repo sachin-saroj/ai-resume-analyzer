@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useCallback } from 'react';
 import axios from 'axios';
 
 const AnalysisContext = createContext();
-const API = 'http://localhost:5000/api';
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export const useAnalysis = () => {
   const ctx = useContext(AnalysisContext);

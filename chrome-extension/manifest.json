@@ -8,7 +8,8 @@
     "storage"
   ],
   "host_permissions": [
-    "http://localhost:5000/*"
+    "http://localhost:5000/*",
+    "https://*/*"
   ],
   "action": {
     "default_popup": "popup.html",

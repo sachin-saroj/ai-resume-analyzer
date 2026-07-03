@@ -31,12 +31,18 @@ app.use((err, req, res, next) => {
   });
 });
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log('✅ Connected to MongoDB (Elite Metrics Database)');
-    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-  })
-  .catch(err => {
-    console.error('❌ Failed to connect to MongoDB, falling back to In-Memory Offline Mode', err.message);
-    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT} (Offline Mode)`));
-  });
+const mongoURI = process.env.MONGO_URI || process.env.MONGODB_URI;
+if (mongoURI) {
+  mongoose.connect(mongoURI)
+    .then(() => {
+      console.log('✅ Connected to MongoDB (Elite Metrics Database)');
+      app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+    })
+    .catch(err => {
+      console.error('❌ Failed to connect to MongoDB, falling back to In-Memory Offline Mode:', err.message);
+      app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT} (Offline Mode)`));
+    });
+} else {
+  console.warn('⚠️ No MONGO_URI or MONGODB_URI environment variable set. Defaulting to In-Memory Offline Mode.');
+  app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT} (Offline Mode)`));
+}
