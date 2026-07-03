@@ -1,12 +1,14 @@
-import { Home, FileText, PieChart, Calendar, HelpCircle, Settings, MoreHorizontal, Trophy, Star, Zap } from 'lucide-react';
+import { Home, FileText, PieChart, Calendar, HelpCircle, Settings, LogOut, Trophy, Star, Zap } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useAnalysis } from '../../context/AnalysisContext';
+import { useAuth } from '../../context/AuthContext';
 import { useEffect, useState } from 'react';
 
 const Sidebar = () => {
   const { darkMode } = useTheme();
   const { points, fetchPoints } = useAnalysis();
+  const { user, logout } = useAuth();
   const [tier, setTier] = useState('Bronze');
 
   useEffect(() => {
@@ -30,6 +32,7 @@ const Sidebar = () => {
   };
 
   const currentTier = tierColors[tier] || tierColors.Bronze;
+  const initial = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
 
   return (
     <aside className={`w-64 flex flex-col h-full rounded-tr-3xl rounded-br-3xl z-10 m-2 mr-0 transition-colors duration-300
@@ -125,17 +128,23 @@ const Sidebar = () => {
       </div>
 
       {/* User Profile */}
-      <div className={`p-4 mx-4 mb-4 rounded-2xl flex items-center justify-between cursor-pointer transition-all duration-200 ${darkMode ? 'border border-gray-700 bg-gray-800/50 hover:bg-gray-800' : 'border border-slate-100 bg-white hover:shadow-md'}`}>
+      <div className={`p-4 mx-4 mb-4 rounded-2xl flex items-center justify-between transition-all duration-200 ${darkMode ? 'border border-gray-700 bg-gray-800/50' : 'border border-slate-100 bg-white'}`}>
         <div className="flex items-center gap-3">
           <div className="h-9 w-9 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center shrink-0 text-white font-bold text-sm">
-            S
+            {initial}
           </div>
           <div>
-            <p className={`text-sm font-bold leading-tight ${darkMode ? 'text-white' : 'text-slate-800'}`}>Sachin</p>
-            <p className={`text-[10px] font-medium ${darkMode ? 'text-gray-400' : 'text-slate-400'}`}>Pro Member</p>
+            <p className={`text-sm font-bold leading-tight ${darkMode ? 'text-white' : 'text-slate-800'}`}>{user?.name || 'User'}</p>
+            <p className={`text-[10px] font-medium uppercase tracking-wider ${darkMode ? 'text-indigo-400' : 'text-indigo-500'}`}>{user?.tier || 'Free'} Member</p>
           </div>
         </div>
-        <MoreHorizontal size={18} className={darkMode ? 'text-gray-500' : 'text-slate-400'} />
+        <button 
+          onClick={logout}
+          className={`p-1.5 rounded-lg transition-colors cursor-pointer ${darkMode ? 'hover:bg-red-500/10 text-gray-400 hover:text-red-400' : 'hover:bg-red-50 text-slate-400 hover:text-red-600'}`}
+          title="Logout"
+        >
+          <LogOut size={16} />
+        </button>
       </div>
     </aside>
   );

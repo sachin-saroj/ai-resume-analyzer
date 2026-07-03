@@ -1,10 +1,12 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { AnalysisProvider } from './context/AnalysisContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Sidebar from './components/layout/Sidebar';
 import Navbar from './components/layout/Navbar';
 import Dashboard from './pages/Dashboard';
 import History from './pages/History';
+import Auth from './pages/Auth';
 import { Component } from 'react';
 
 // Error Boundary to prevent full white screen crashes
@@ -44,27 +46,100 @@ class ErrorBoundary extends Component {
   }
 }
 
+// Protected Route Component
+function ProtectedRoute({ children }) {
+  const { user, loading } = useAuth();
+  const { darkMode } = useTheme();
+
+  if (loading) {
+    return (
+      <div className={`flex flex-col items-center justify-center h-screen transition-colors duration-300 ${
+        darkMode ? 'bg-gray-950 text-white' : 'bg-[#f4f7fe] text-gray-800'
+      }`}>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+        <p className="mt-4 text-xs font-bold tracking-widest uppercase opacity-75 animate-pulse">Verifying Credentials...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
+
+  return children;
+}
+
+// Route for Guest users (Auth screen)
+function AuthRoute({ children }) {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-950">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+      </div>
+    );
+  }
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+}
+
 function AppContent() {
   const { darkMode } = useTheme();
+  const { user } = useAuth();
 
   return (
     <Router>
       <div className={`flex h-screen font-sans overflow-hidden transition-colors duration-300 ${
         darkMode ? 'bg-gray-950 text-gray-100' : 'bg-[#f4f7fe] text-gray-800'
       }`}>
-        <Sidebar />
+        {user && <Sidebar />}
         <div className="flex flex-col flex-1 overflow-hidden">
-          <Navbar />
-          <main className="flex-1 overflow-y-auto px-8 py-6">
-            <div className="max-w-[1400px] mx-auto">
+          {user && <Navbar />}
+          <main className={`flex-1 overflow-y-auto ${user ? 'px-8 py-6' : 'p-0'}`}>
+            <div className={user ? 'max-w-[1400px] mx-auto' : 'h-full w-full'}>
               <ErrorBoundary>
                 <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/history" element={<History />} />
-                  <Route path="/analytics" element={<Dashboard />} />
-                  <Route path="/schedule" element={<Dashboard />} />
-                  <Route path="/help" element={<Dashboard />} />
-                  <Route path="/settings" element={<Dashboard />} />
+                  <Route path="/auth" element={
+                    <AuthRoute>
+                      <Auth />
+                    </AuthRoute>
+                  } />
+                  <Route path="/" element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/history" element={
+                    <ProtectedRoute>
+                      <History />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/analytics" element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/schedule" element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/help" element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/settings" element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </ErrorBoundary>
             </div>
@@ -78,9 +153,11 @@ function AppContent() {
 function App() {
   return (
     <ThemeProvider>
-      <AnalysisProvider>
-        <AppContent />
-      </AnalysisProvider>
+      <AuthProvider>
+        <AnalysisProvider>
+          <AppContent />
+        </AnalysisProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

@@ -234,14 +234,24 @@ exports.startAnalysis = async (req, res) => {
 // ============================================
 exports.downloadExcel = async (req, res) => {
   try {
+    const userId = req.user.id;
     let analysis;
     try {
-      analysis = await Analysis.findById(req.params.id);
+      analysis = await Analysis.findOne({ _id: req.params.id, userId });
     } catch {
       analysis = global.EXAM_MEMORY_STORE[req.params.id];
+      if (analysis && String(analysis.userId) !== String(userId)) {
+        analysis = null;
+      }
     }
 
-    if (!analysis) analysis = global.EXAM_MEMORY_STORE[req.params.id];
+    if (!analysis) {
+      analysis = global.EXAM_MEMORY_STORE[req.params.id];
+      if (analysis && String(analysis.userId) !== String(userId)) {
+        analysis = null;
+      }
+    }
+
     if (!analysis) return res.status(404).json({ success: false, message: 'Analysis record not found' });
 
     const buffer = await generateExcelReport(analysis);
@@ -259,14 +269,24 @@ exports.downloadExcel = async (req, res) => {
 // ============================================
 exports.generateCoverLetter = async (req, res) => {
   try {
+    const userId = req.user.id;
     let analysis;
     try {
-      analysis = await Analysis.findById(req.params.id);
+      analysis = await Analysis.findOne({ _id: req.params.id, userId });
     } catch {
       analysis = global.EXAM_MEMORY_STORE[req.params.id];
+      if (analysis && String(analysis.userId) !== String(userId)) {
+        analysis = null;
+      }
     }
 
-    if (!analysis) analysis = global.EXAM_MEMORY_STORE[req.params.id];
+    if (!analysis) {
+      analysis = global.EXAM_MEMORY_STORE[req.params.id];
+      if (analysis && String(analysis.userId) !== String(userId)) {
+        analysis = null;
+      }
+    }
+
     if (!analysis) return res.status(404).json({ success: false, message: 'Analysis not found' });
 
     const name = analysis.extractedData?.resume?.personalInfo?.name || 'Candidate';

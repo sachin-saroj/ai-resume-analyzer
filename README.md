@@ -19,9 +19,8 @@ An enterprise-grade, locally-hosted platform that deeply parses your resume, cro
 - **Advanced PDF Parsing:** Utilizes robust buffer-level extraction with dynamic fallbacks to perfectly read highly complex PDF layouts.
 - **Real-time Gap Analysis:** Instantly diffs your current resume against provided job descriptions.
 - **Grammar & Action Verb NLP:** Scans for weak verbs (e.g., "helped with", "worked on") and suggests commanding alternatives (e.g., "Architected", "Spearheaded").
-- **Offline-First Architecture:** While it features a fully-fledged MongoDB backend, the core engine degrades gracefully, retaining results in-memory securely if external DBs are unreachable.
-- **Beautiful, Responsive UI:** Built with standard React, styled perfectly with TailwindCSS, and integrated with smooth CSS fade-in animations for flawless data rendering.
-- **Gamified Progression:** Earn "Career Points" and level up your strategy with dynamic progress tracking.
+- **Offline-First Architecture:** Supports full in-memory fallback for both analysis records and user authentication when MongoDB is unreachable, allowing local development runs to function completely offline without Mongoose connection requirements.
+- **Strict User Isolation:** Enforces JWT-based authentication middleware on the API server and dynamic Axios interceptors in the client, ensuring user history, career points, and analyses are never mixed or leaked.
 
 ---
 
@@ -42,6 +41,18 @@ An enterprise-grade, locally-hosted platform that deeply parses your resume, cro
 - Zod (Type-safe input validation)
 
 ---
+
+## 🔐 Authentication & Offline Fallback Mode
+
+To prevent user data leakage (where resume version history, scores, and points get mixed between different local or remote users), this platform enforces **strict JWT-based authentication**:
+
+- **Strict Route Protection:** All API endpoints are protected by token verification middleware. Missing, malformed, or expired headers are rejected immediately with a `401 Unauthorized` status.
+- **Client Session Persistence:** The React client automatically stores the JWT securely in `localStorage` and includes an Axios request interceptor to inject the token into all outgoing requests.
+- **Mongoose Offline Fallback:** If MongoDB is offline, or no `MONGODB_URI` environment variable is defined, the backend degrades gracefully to an in-memory database fallback (`global.OFFLINE_USERS`). You can register, login, and access different user profiles locally completely database-free.
+- **Intelligent Local Skill Matcher:** When running locally (without external cloud APIs like OpenAI), the matching engine utilizes a custom local fuzzy-matcher combining tech-ontology synonym mappings (e.g. `ReactJS` <=> `React.js`), normalization filters, string-similarity algorithms (Jaro-Winkler), and language exclusions (to prevent Java vs. JavaScript false positives).
+
+---
+
 ## 📸 Platform Showcase
 
 ### 1. The Dashboard (Instant Analysis)
