@@ -334,7 +334,10 @@ const Dashboard = () => {
                 <div className="absolute top-0 right-0 w-40 h-40 bg-yellow-400/5 rounded-bl-full transform translate-x-16 -translate-y-12"></div>
                 <span className="text-[10px] font-bold text-yellow-500 bg-yellow-500/10 px-2.5 py-1 rounded-full border border-yellow-500/20 w-max mb-4 flex items-center gap-1"><Award size={12} /> Market Benchmark</span>
                 <h4 className="text-2xl font-black text-white mb-2">{result.data?.benchmarking?.category || 'Average'}</h4>
-                <p className="text-sm text-slate-300 leading-relaxed font-medium mb-4">{result.data?.benchmarking?.explanation?.substring(0, 120)}</p>
+                <p className="text-sm text-slate-300 leading-relaxed font-medium mb-1">{result.data?.benchmarking?.explanation}</p>
+                <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-4">
+                  * {result.data?.benchmarking?.disclaimer || 'Estimated score band (heuristic)'}
+                </p>
                 <div className="h-3 w-full bg-slate-700 rounded-full overflow-hidden"><div className="h-full bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full transition-all duration-1000" style={{ width: `${result.data?.benchmarking?.percentile || 50}%` }}></div></div>
                 <p className="text-[10px] text-slate-500 mt-2 font-bold">Percentile: {result.data?.benchmarking?.percentile || 50}th</p>
               </motion.div>

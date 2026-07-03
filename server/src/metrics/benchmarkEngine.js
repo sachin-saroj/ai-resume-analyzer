@@ -28,22 +28,23 @@ const calculatePercentile = (overallScore) => {
 
   if (percentile >= 90) {
     category = 'Top 10%';
-    explanation = `Elite tier. Your resume scores higher than ${percentile}% of candidates applying for similar roles. You are highly positioned to pass FAANG ATS screens.`;
+    explanation = `Elite tier. Estimated score ranks in top 10% based on statistical heuristics. Highly positioned to pass FAANG ATS screens.`;
   } else if (percentile >= 75) {
     category = 'Top 25%';
-    explanation = `Strong resume. Your profile beats ${percentile}% of applicants. Consider tweaking minor formatting and secondary keywords.`;
+    explanation = `Strong resume. Estimated score ranks in top 25% based on statistical heuristics. Consider tweaking minor formatting.`;
   } else if (percentile >= 40) {
     category = 'Average';
-    explanation = `You are in the middle of the pack (Top ${100 - percentile}%). You must address skill gaps to stand out for competitive roles.`;
+    explanation = `Estimated score ranks in middle of the pack (Top ${100 - percentile}%). Address critical skill gaps to stand out.`;
   } else {
     category = 'Below Average';
-    explanation = `High risk of ATS rejection. Only stronger than ${percentile}% of applicants. Immediate action required on missing critical skills.`;
+    explanation = `High risk of ATS rejection. Estimated score ranks in below average band. Immediate action required on missing critical skills.`;
   }
 
   return {
     percentile,
     category,
-    explanation
+    explanation,
+    disclaimer: 'Estimated score band (heuristic, not based on real candidate data)'
   };
 };
 
