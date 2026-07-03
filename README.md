@@ -126,3 +126,7 @@ The application will spin up at:
 ---
 
 *Built for Engineers, by Engineers. Dominate the ATS.*
+
+
+## Changelog
+- **[#17]** Refactor Auth error alerts to use inline visual banners
