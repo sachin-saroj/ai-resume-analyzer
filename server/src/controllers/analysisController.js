@@ -19,6 +19,14 @@ global.EXAM_MEMORY_STORE = global.EXAM_MEMORY_STORE || {};
 global.VERSION_HISTORY = global.VERSION_HISTORY || {};
 global.USER_POINTS = global.USER_POINTS || {};
 
+// Cap memory helper to prevent memory leak crashes in offline mode
+const capInMemoryStore = (store, limit = 100) => {
+  const keys = Object.keys(store);
+  if (keys.length > limit) {
+    delete store[keys[0]];
+  }
+};
+
 // --- Interview Question Generation ---
 const generateInterviewQuestions = (parsedJD, parsedResume, missingSkills) => {
   const questions = [];
@@ -200,6 +208,7 @@ exports.startAnalysis = async (req, res) => {
     }
 
     global.EXAM_MEMORY_STORE[analysisDoc._id] = analysisDoc;
+    capInMemoryStore(global.EXAM_MEMORY_STORE, 100);
 
     // ---- Track version history ----
     if (!global.VERSION_HISTORY[userId]) global.VERSION_HISTORY[userId] = [];
@@ -211,11 +220,15 @@ exports.startAnalysis = async (req, res) => {
       date: new Date().toISOString(),
       versionComparison
     });
+    if (global.VERSION_HISTORY[userId].length > 20) {
+      global.VERSION_HISTORY[userId].shift();
+    }
 
     // ---- Award gamification points ----
     if (!global.USER_POINTS[userId]) global.USER_POINTS[userId] = 0;
     global.USER_POINTS[userId] += 10; // 10 points per analysis
     if (dynamicScore.overallScore >= 80) global.USER_POINTS[userId] += 5; // bonus for high score
+    capInMemoryStore(global.USER_POINTS, 200);
 
     res.status(200).json({
       success: true,

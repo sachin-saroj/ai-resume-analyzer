@@ -12,8 +12,16 @@ const {
 const authMiddleware = require('../middlewares/auth');
 const { secureUpload } = require('../middlewares/fileValidator');
 
+const { rateLimiter } = require('../middlewares/rateLimiter');
+
+const analysisLimiter = rateLimiter({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 30,
+  message: 'Too many analysis requests from this IP. Please try again after 5 minutes.'
+});
+
 // Initiate Analysis Pipeline
-router.post('/start', authMiddleware, secureUpload, startAnalysis);
+router.post('/start', authMiddleware, analysisLimiter, secureUpload, startAnalysis);
 
 // Download Excel Report
 router.get('/:id/export', authMiddleware, downloadExcel);
@@ -22,7 +30,7 @@ router.get('/:id/export', authMiddleware, downloadExcel);
 router.get('/:id/cover-letter', authMiddleware, generateCoverLetter);
 
 // Rescore (Apply Live Patch)
-router.post('/:id/rescore', authMiddleware, rescoreAnalysis);
+router.post('/:id/rescore', authMiddleware, analysisLimiter, rescoreAnalysis);
 
 // Version History
 router.get('/history/versions', authMiddleware, getVersionHistory);

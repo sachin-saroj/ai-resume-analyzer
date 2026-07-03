@@ -6,6 +6,13 @@ const User = require('../models/User');
 // In-memory fallback for offline mode
 global.OFFLINE_USERS = global.OFFLINE_USERS || {};
 
+const capInMemoryStore = (store, limit = 100) => {
+  const keys = Object.keys(store);
+  if (keys.length > limit) {
+    delete store[keys[0]];
+  }
+};
+
 const generateToken = (id, subscriptionTier) => {
   return jwt.sign({ id, subscriptionTier }, process.env.JWT_SECRET || 'fallback_secret_for_local_development', {
     expiresIn: '30d',
@@ -18,6 +25,19 @@ exports.registerUser = async (req, res) => {
 
     if (!name || !email || !password) {
       return res.status(400).json({ success: false, message: 'Please add all fields' });
+    }
+
+    if (name.trim().length < 2) {
+      return res.status(400).json({ success: false, message: 'Name must be at least 2 characters long' });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ success: false, message: 'Please provide a valid email address' });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ success: false, message: 'Password must be at least 6 characters long' });
     }
 
     const dbConnected = mongoose.connection.readyState === 1;
@@ -57,6 +77,7 @@ exports.registerUser = async (req, res) => {
         createdAt: new Date()
       };
       global.OFFLINE_USERS[normalizedEmail] = user;
+      capInMemoryStore(global.OFFLINE_USERS, 100);
     }
 
     if (user) {
