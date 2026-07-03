@@ -15,7 +15,7 @@ const computeVersionDiff = (currentAnalysis, previousAnalysis) => {
   const scoreChange = currentAnalysis.overallScore - previousAnalysis.scores.overallScore;
   
   const currentSkills = new Set(currentAnalysis.resumeSkills || []);
-  const prevSkills = new Set(previousAnalysis.extractedData?.resumeSkills || []);
+  const prevSkills = new Set(previousAnalysis.extractedData?.resume?.skills || []);
 
   const skillsAdded = [...currentSkills].filter(x => !prevSkills.has(x));
   const skillsRemoved = [...prevSkills].filter(x => !currentSkills.has(x));
