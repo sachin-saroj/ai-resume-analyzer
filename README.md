@@ -129,4 +129,5 @@ The application will spin up at:
 
 
 ## Changelog
+- **[#19]** Add console logs for resume parser performance telemetry
 - **[#17]** Refactor Auth error alerts to use inline visual banners
