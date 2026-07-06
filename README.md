@@ -129,6 +129,7 @@ The application will spin up at:
 
 
 ## Changelog
+- **[#41]** Fix spelling typos in documentation (9)
 - **[#39]** Configure standard environment variables example (8)
 - **[#37]** Document Docker container layout setup (7)
 - **[#35]** Optimize index search fields in schema (6)
