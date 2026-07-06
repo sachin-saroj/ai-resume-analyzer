@@ -129,6 +129,7 @@ The application will spin up at:
 
 
 ## Changelog
+- **[#45]** Improve button hover micro-interactions (11)
 - **[#43]** Enhance validation checks for settings routing (10)
 - **[#41]** Fix spelling typos in documentation (9)
 - **[#39]** Configure standard environment variables example (8)
