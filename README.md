@@ -129,6 +129,7 @@ The application will spin up at:
 
 
 ## Changelog
+- **[#35]** Optimize index search fields in schema (6)
 - **[#33]** Add test assertions for categorizations logic (5)
 - **[#31]** Improve timeout handling for api queries (4)
 - **[#29]** Add performance telemetry logs (3)
