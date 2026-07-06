@@ -129,6 +129,7 @@ The application will spin up at:
 
 
 ## Changelog
+- **[#31]** Improve timeout handling for api queries (4)
 - **[#29]** Add performance telemetry logs (3)
 - **[#27]** Refactor error alerts to use inline visual banners (2)
 - **[#25]** Fix console warning in chart rendering (1)
