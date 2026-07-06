@@ -129,6 +129,7 @@ The application will spin up at:
 
 
 ## Changelog
+- **[#25]** Fix console warning in chart rendering (1)
 - **[#23]** Add test coverage assertion for skill categorizations
 - **[#21]** Improve timeout handling for client API requests
 - **[#19]** Add console logs for resume parser performance telemetry
