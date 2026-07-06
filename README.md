@@ -129,6 +129,7 @@ The application will spin up at:
 
 
 ## Changelog
+- **[#53]** Resolve potential memory leak in listener callbacks (15)
 - **[#51]** Optimize fonts loading performance (14)
 - **[#49]** Document security access control policies (13)
 - **[#47]** Format log output structures (12)
