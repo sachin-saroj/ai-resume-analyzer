@@ -114,3 +114,11 @@
   - Linked routes `/analytics`, `/schedule`, `/help`, and `/settings` to their corresponding React components.
   - Validated that the Vite compiler compiles clean and nodemon restarts successfully.
   - Executed automated browser screenshots confirming the rendering of settings, schedule, help expandables, and analytics empty states.
+
+### Task 15: Refine Dark Mode Layout Theme & Contrasts
+- Status: [x] Completed
+- Files changed: `client/src/index.css`
+- What changed:
+  - Fixed the dark mode cards and layout backgrounds using class-level CSS overrides.
+  - Redefined text colors, borders, and input fields to render in clean, premium dark charcoal (#18181b), dark slate (#27272a), and light text (#f4f4f5) under `.dark` tags.
+  - Pushed theme updates to GitHub.
