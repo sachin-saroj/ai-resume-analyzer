@@ -2,6 +2,114 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
+:root {
+  --background: #f5f5f7;
+  --text: #09090b;
+  --card-bg: #ffffff;
+  
+  --indigo-50: #f4f4f5;
+  --indigo-100: #e4e4e7;
+  --indigo-200: #d4d4d8;
+  --indigo-300: #a1a1aa;
+  --indigo-400: #71717a;
+  --indigo-500: #18181b;
+  --indigo-600: #09090b;
+  --indigo-700: #000000;
+  --indigo-800: #000000;
+  --indigo-900: #000000;
+  --indigo-950: #000000;
+
+  --purple-50: #f4f4f5;
+  --purple-100: #e4e4e7;
+  --purple-200: #d4d4d8;
+  --purple-300: #a1a1aa;
+  --purple-400: #71717a;
+  --purple-500: #18181b;
+  --purple-600: #09090b;
+  --purple-700: #000000;
+  --purple-800: #000000;
+  --purple-900: #000000;
+  --purple-950: #000000;
+
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+  --slate-950: #020617;
+
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --gray-950: #030712;
+}
+
+html.dark {
+  --background: #09090b;
+  --text: #f4f4f5;
+  --card-bg: #18181b;
+
+  --indigo-50: #18181b;
+  --indigo-100: #27272a;
+  --indigo-200: #3f3f46;
+  --indigo-300: #52525b;
+  --indigo-400: #71717a;
+  --indigo-500: #a1a1aa;
+  --indigo-600: #cbd5e1;
+  --indigo-700: #e4e4e7;
+  --indigo-800: #f4f4f5;
+  --indigo-900: #fafafa;
+  --indigo-950: #ffffff;
+
+  --purple-50: #18181b;
+  --purple-100: #27272a;
+  --purple-200: #3f3f46;
+  --purple-300: #52525b;
+  --purple-400: #71717a;
+  --purple-500: #a1a1aa;
+  --purple-600: #cbd5e1;
+  --purple-700: #e4e4e7;
+  --purple-800: #f4f4f5;
+  --purple-900: #fafafa;
+  --purple-950: #ffffff;
+
+  --slate-50: #0c0c0e;
+  --slate-100: #1c1c1f;
+  --slate-200: #2a2a2f;
+  --slate-300: #3f3f46;
+  --slate-400: #71717a;
+  --slate-500: #a1a1aa;
+  --slate-600: #cbd5e1;
+  --slate-700: #e4e4e7;
+  --slate-800: #f4f4f5;
+  --slate-900: #fafafa;
+  --slate-950: #ffffff;
+
+  --gray-50: #0c0c0e;
+  --gray-100: #1c1c1f;
+  --gray-200: #2a2a2f;
+  --gray-300: #3f3f46;
+  --gray-400: #71717a;
+  --gray-500: #a1a1aa;
+  --gray-600: #cbd5e1;
+  --gray-700: #e4e4e7;
+  --gray-800: #f4f4f5;
+  --gray-900: #fafafa;
+  --gray-950: #ffffff;
+}
+
 @theme {
   --color-accent: #18181b;
   --color-accent-hover: #09090b;
@@ -9,38 +117,55 @@
   --color-neutral-light: #f5f5f7;
   --color-neutral-dark: #09090b;
 
-  /* Leverage mapping: map indigo, purple, and slate to our new tokens */
-  --color-indigo-50: #f4f4f5;
-  --color-indigo-100: #e4e4e7;
-  --color-indigo-200: #d4d4d8;
-  --color-indigo-300: #a1a1aa;
-  --color-indigo-400: #71717a;
-  --color-indigo-500: #18181b;
-  --color-indigo-600: #09090b;
-  --color-indigo-700: #000000;
-  --color-indigo-800: #000000;
-  --color-indigo-900: #000000;
-  --color-indigo-950: #000000;
+  --color-white: var(--card-bg);
 
-  --color-purple-50: #f4f4f5;
-  --color-purple-100: #e4e4e7;
-  --color-purple-200: #d4d4d8;
-  --color-purple-300: #a1a1aa;
-  --color-purple-400: #71717a;
-  --color-purple-500: #18181b;
-  --color-purple-600: #09090b;
-  --color-purple-700: #000000;
-  --color-purple-800: #000000;
-  --color-purple-900: #000000;
-  --color-purple-950: #000000;
+  --color-indigo-50: var(--indigo-50);
+  --color-indigo-100: var(--indigo-100);
+  --color-indigo-200: var(--indigo-200);
+  --color-indigo-300: var(--indigo-300);
+  --color-indigo-400: var(--indigo-400);
+  --color-indigo-500: var(--indigo-500);
+  --color-indigo-600: var(--indigo-600);
+  --color-indigo-700: var(--indigo-700);
+  --color-indigo-800: var(--indigo-800);
+  --color-indigo-900: var(--indigo-900);
+  --color-indigo-950: var(--indigo-950);
 
-  --color-slate-900: #09090b;
-  --color-gray-950: #09090b;
-  --color-gray-900: #18181b;
-  --color-gray-800: #27272a;
-  --color-gray-700: #3f3f46;
-  --color-gray-600: #52525b;
-  --color-gray-500: #71717a;
+  --color-purple-50: var(--purple-50);
+  --color-purple-100: var(--purple-100);
+  --color-purple-200: var(--purple-200);
+  --color-purple-300: var(--purple-300);
+  --color-purple-400: var(--purple-400);
+  --color-purple-500: var(--purple-500);
+  --color-purple-600: var(--purple-600);
+  --color-purple-700: var(--purple-700);
+  --color-purple-800: var(--purple-800);
+  --color-purple-900: var(--purple-900);
+  --color-purple-950: var(--purple-950);
+
+  --color-slate-50: var(--slate-50);
+  --color-slate-100: var(--slate-100);
+  --color-slate-200: var(--slate-200);
+  --color-slate-300: var(--slate-300);
+  --color-slate-400: var(--slate-400);
+  --color-slate-500: var(--slate-500);
+  --color-slate-600: var(--slate-600);
+  --color-slate-700: var(--slate-700);
+  --color-slate-800: var(--slate-800);
+  --color-slate-900: var(--slate-900);
+  --color-slate-950: var(--slate-950);
+
+  --color-gray-50: var(--gray-50);
+  --color-gray-100: var(--gray-100);
+  --color-gray-200: var(--gray-200);
+  --color-gray-300: var(--gray-300);
+  --color-gray-400: var(--gray-400);
+  --color-gray-500: var(--gray-500);
+  --color-gray-600: var(--gray-600);
+  --color-gray-700: var(--gray-700);
+  --color-gray-800: var(--gray-800);
+  --color-gray-900: var(--gray-900);
+  --color-gray-950: var(--gray-950);
 
   --animate-marquee: marquee 30s linear infinite;
 
@@ -51,16 +176,16 @@
 }
 
 body {
-  background-color: #f5f5f7;
-  color: #09090b;
+  background-color: var(--background);
+  color: var(--text);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 html.dark body {
-  background-color: #0A0A0B;
-  color: #FAFAF8;
+  background-color: var(--background);
+  color: var(--text);
 }
 
 /* Custom scrollbar */
@@ -133,3 +258,70 @@ html.dark .prose {
 .animate-fade-in {
   animation: fadeInUp 0.5s ease-out forwards;
 }
+
+/* Explicit Dark Theme Class Overrides for Premium Aesthetics */
+html.dark .bg-white {
+  background-color: var(--card-bg) !important;
+}
+
+html.dark .border-slate-100,
+html.dark .border-slate-200,
+html.dark .border-slate-100\/50,
+html.dark .border-slate-200\/50 {
+  border-color: var(--slate-100) !important;
+}
+
+html.dark .bg-slate-50,
+html.dark .bg-slate-100 {
+  background-color: var(--slate-50) !important;
+}
+
+html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--slate-100) !important;
+}
+
+html.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--slate-100) !important;
+}
+
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-slate-700 {
+  color: var(--slate-800) !important;
+}
+
+html.dark .text-slate-600,
+html.dark .text-slate-500 {
+  color: var(--slate-500) !important;
+}
+
+html.dark .text-slate-400 {
+  color: var(--slate-400) !important;
+}
+
+/* Invert default input border and text on focus/active */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: var(--card-bg) !important;
+  color: var(--text) !important;
+  border-color: var(--slate-200) !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: var(--slate-400) !important;
+}
+
+/* Sidebar and Navbar layout details */
+html.dark aside.bg-white {
+  background-color: var(--card-bg) !important;
+  border-right-color: var(--slate-100) !important;
+}
+
+/* Active links inside sidebar should use text-slate-900 when bg is white/light */
+html.dark aside .bg-slate-900 {
+  background-color: var(--slate-900) !important;
+  color: var(--slate-50) !important;
+}
+
