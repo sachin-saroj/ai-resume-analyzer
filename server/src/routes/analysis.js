@@ -7,7 +7,8 @@ const {
   getVersionHistory,
   syncLinkedIn,
   getUserPoints,
-  rescoreAnalysis
+  rescoreAnalysis,
+  getAnalyticsSummary
 } = require('../controllers/analysisController');
 const authMiddleware = require('../middlewares/auth');
 const { secureUpload } = require('../middlewares/fileValidator');
@@ -34,6 +35,10 @@ router.post('/:id/rescore', authMiddleware, analysisLimiter, rescoreAnalysis);
 
 // Version History
 router.get('/history/versions', authMiddleware, getVersionHistory);
+
+// Analytics Summary
+router.get('/analytics/summary', authMiddleware, getAnalyticsSummary);
+router.get('/summary', authMiddleware, getAnalyticsSummary);
 
 // LinkedIn Sync (Mock)
 router.get('/linkedin/sync', authMiddleware, syncLinkedIn);

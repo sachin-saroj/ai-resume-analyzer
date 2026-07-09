@@ -179,3 +179,121 @@ exports.getMe = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { name, email } = req.body;
+
+    if (!name || !email) {
+      return res.status(400).json({ success: false, message: 'Name and email are required fields.' });
+    }
+
+    if (name.trim().length < 2) {
+      return res.status(400).json({ success: false, message: 'Name must be at least 2 characters long' });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ success: false, message: 'Please provide a valid email address' });
+    }
+
+    const dbConnected = mongoose.connection.readyState === 1;
+    let updatedUser;
+
+    if (dbConnected) {
+      // Check if email already taken
+      const emailExists = await User.findOne({ email, _id: { $ne: userId } });
+      if (emailExists) {
+        return res.status(400).json({ success: false, message: 'Email address already in use.' });
+      }
+
+      updatedUser = await User.findByIdAndUpdate(userId, { name, email }, { new: true });
+    } else {
+      // Find in memory
+      const normalizedEmail = email.toLowerCase();
+      const user = Object.values(global.OFFLINE_USERS).find(u => u._id === userId);
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+
+      // Check email uniqueness
+      const emailExists = Object.values(global.OFFLINE_USERS).find(u => u.email === normalizedEmail && u._id !== userId);
+      if (emailExists) {
+        return res.status(400).json({ success: false, message: 'Email address already in use (Offline Mode)' });
+      }
+
+      // Delete old key, save new key
+      const oldEmail = user.email;
+      delete global.OFFLINE_USERS[oldEmail];
+
+      user.name = name;
+      user.email = normalizedEmail;
+      global.OFFLINE_USERS[normalizedEmail] = user;
+      updatedUser = user;
+    }
+
+    res.status(200).json({
+      success: true,
+      user: {
+        id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        tier: updatedUser.subscriptionTier
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Current and new password are required.' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ success: false, message: 'New password must be at least 6 characters long' });
+    }
+
+    const dbConnected = mongoose.connection.readyState === 1;
+    let user;
+
+    if (dbConnected) {
+      user = await User.findById(userId).select('+password');
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ success: false, message: 'Incorrect current password.' });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(newPassword, salt);
+      await user.save();
+    } else {
+      user = Object.values(global.OFFLINE_USERS).find(u => u._id === userId);
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ success: false, message: 'Incorrect current password (Offline Mode).' });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(newPassword, salt);
+    }
+
+    res.status(200).json({ success: true, message: 'Password updated successfully.' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

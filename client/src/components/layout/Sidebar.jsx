@@ -1,151 +1,99 @@
-import { Home, FileText, PieChart, Calendar, HelpCircle, Settings, LogOut, Trophy, Star, Zap } from 'lucide-react';
+import { Home, FileText, BarChart3, Calendar, HelpCircle, Settings, LogOut, Zap } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
-import { useAnalysis } from '../../context/AnalysisContext';
 import { useAuth } from '../../context/AuthContext';
-import { useEffect, useState } from 'react';
 
 const Sidebar = () => {
-  const { darkMode } = useTheme();
-  const { points, fetchPoints } = useAnalysis();
   const { user, logout } = useAuth();
-  const [tier, setTier] = useState('Bronze');
-
-  useEffect(() => {
-    fetchPoints().then(data => {
-      if (data?.tier) setTier(data.tier);
-    });
-  }, [fetchPoints]);
+  const initial = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
 
   const navItems = [
     { icon: Home, label: 'Dashboard', path: '/' },
     { icon: FileText, label: 'History', path: '/history' },
-    { icon: PieChart, label: 'Analytics', path: '/analytics' },
+    { icon: BarChart3, label: 'Analytics', path: '/analytics' },
     { icon: Calendar, label: 'Schedule', path: '/schedule' },
   ];
 
-  const tierColors = {
-    Bronze: { bg: 'from-amber-700 to-amber-900', text: 'text-amber-300', icon: '🥉' },
-    Silver: { bg: 'from-slate-400 to-slate-600', text: 'text-slate-200', icon: '🥈' },
-    Gold: { bg: 'from-yellow-400 to-amber-500', text: 'text-yellow-100', icon: '🥇' },
-    Diamond: { bg: 'from-cyan-400 to-blue-500', text: 'text-cyan-100', icon: '💎' },
-  };
-
-  const currentTier = tierColors[tier] || tierColors.Bronze;
-  const initial = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
-
   return (
-    <aside className={`w-64 flex flex-col h-full rounded-tr-3xl rounded-br-3xl z-10 m-2 mr-0 transition-colors duration-300
-      ${darkMode
-        ? 'bg-gray-900 border-r border-gray-800 shadow-[4px_0_24px_rgba(0,0,0,0.3)]'
-        : 'bg-white border-r border-gray-100 shadow-[4px_0_24px_rgba(0,0,0,0.02)]'
-      }`}
-    >
-      {/* Brand */}
-      <div className="pt-8 pb-6 px-8 flex items-center gap-3">
-        <div className="h-9 w-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg shadow-indigo-500/30 flex items-center justify-center">
-          <Zap size={18} className="text-white" />
-        </div>
-        <div>
-          <h1 className={`text-lg font-extrabold tracking-tight ${darkMode ? 'text-white' : 'text-slate-800'}`}>ResumeAI</h1>
-          <p className={`text-[9px] font-bold uppercase tracking-widest ${darkMode ? 'text-indigo-400' : 'text-indigo-500'}`}>Pro Edition</p>
+    <aside className="w-20 flex flex-col items-center justify-between h-full py-6 bg-white border-r border-slate-100 shrink-0 z-20">
+      
+      {/* Brand Logo Container */}
+      <div className="flex flex-col items-center">
+        <div className="h-10 w-10 bg-slate-900 rounded-full flex items-center justify-center shadow-sm">
+          <Zap size={16} className="text-white" />
         </div>
       </div>
 
-      <div className="px-8 mb-3">
-        <span className={`text-[10px] font-bold uppercase tracking-wider ${darkMode ? 'text-gray-500' : 'text-slate-400'}`}>Main Menu</span>
-      </div>
-
-      <nav className="flex-1 px-4 space-y-1">
+      {/* Navigation Stack */}
+      <nav className="flex flex-col items-center gap-4 flex-1 justify-center w-full">
         {navItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
+            title={item.label}
             className={({ isActive }) =>
-              `flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium ${
+              `h-10 w-10 rounded-full flex items-center justify-center transition-all duration-150 ${
                 isActive
-                  ? darkMode
-                    ? 'bg-indigo-500/15 text-indigo-400 shadow-sm shadow-indigo-500/10'
-                    : 'bg-indigo-50 text-indigo-600 shadow-sm'
-                  : darkMode
-                    ? 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
-                    : 'text-slate-400 hover:bg-slate-50 hover:text-slate-600'
+                  ? 'bg-slate-900 text-white shadow-sm'
+                  : 'text-slate-400 hover:bg-slate-50 hover:text-slate-700'
               }`
             }
           >
-            {({ isActive }) => (
-              <>
-                <item.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
-                <span className="text-sm">{item.label}</span>
-              </>
-            )}
+            <item.icon size={18} strokeWidth={2} />
           </NavLink>
         ))}
 
-        <div className="mt-8 px-4 mb-2">
-          <span className={`text-[10px] font-bold uppercase tracking-wider ${darkMode ? 'text-gray-500' : 'text-slate-400'}`}>Other</span>
-        </div>
+        <div className="w-8 h-px bg-slate-100 my-2" />
 
-        <NavLink to="/help" className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium ${darkMode ? 'text-gray-400 hover:bg-gray-800 hover:text-gray-200' : 'text-slate-400 hover:bg-slate-50 hover:text-slate-600'}`}>
-          <HelpCircle size={20} />
-          <span className="text-sm">Help & Support</span>
+        <NavLink
+          to="/help"
+          title="Help & Support"
+          className={({ isActive }) =>
+            `h-10 w-10 rounded-full flex items-center justify-center transition-all duration-150 ${
+              isActive
+                ? 'bg-slate-900 text-white shadow-sm'
+                : 'text-slate-400 hover:bg-slate-50 hover:text-slate-700'
+            }`
+          }
+        >
+          <HelpCircle size={18} />
         </NavLink>
-        <NavLink to="/settings" className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 font-medium ${darkMode ? 'text-gray-400 hover:bg-gray-800 hover:text-gray-200' : 'text-slate-400 hover:bg-slate-50 hover:text-slate-600'}`}>
-          <Settings size={20} />
-          <span className="text-sm">Settings</span>
+
+        <NavLink
+          to="/settings"
+          title="Settings"
+          className={({ isActive }) =>
+            `h-10 w-10 rounded-full flex items-center justify-center transition-all duration-150 ${
+              isActive
+                ? 'bg-slate-900 text-white shadow-sm'
+                : 'text-slate-400 hover:bg-slate-50 hover:text-slate-700'
+            }`
+          }
+        >
+          <Settings size={18} />
         </NavLink>
       </nav>
 
-      {/* Gamification Points Card */}
-      <div className="px-6 pb-3">
-        <div className={`bg-gradient-to-br ${currentTier.bg} p-4 rounded-2xl text-white shadow-lg relative overflow-hidden`}>
-          <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-bl-full transform translate-x-6 -translate-y-6"></div>
-          <div className="flex items-center gap-2 mb-2">
-            <Trophy size={16} className="text-yellow-300" />
-            <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">Career Points</span>
-          </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-black">{points}</span>
-            <span className="text-xs opacity-70">pts</span>
-          </div>
-          <div className="flex items-center gap-1 mt-2">
-            <Star size={12} className={currentTier.text} />
-            <span className={`text-xs font-bold ${currentTier.text}`}>{currentTier.icon} {tier} Tier</span>
-          </div>
+      {/* Footer Profile Stack */}
+      <div className="flex flex-col items-center gap-4">
+        {/* User initials circle */}
+        <div
+          title={`${user?.name || 'User'} (${user?.tier || 'Free'} Member)`}
+          className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 font-bold text-xs border border-slate-200 cursor-help"
+        >
+          {initial}
         </div>
-      </div>
 
-      {/* Info Card */}
-      <div className="px-6 pb-3">
-        <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-5 rounded-2xl text-white shadow-lg shadow-indigo-500/20 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-bl-full transform translate-x-8 -translate-y-8"></div>
-          <h4 className="font-bold text-sm mb-1 z-10 relative">Mastering Resumes</h4>
-          <p className="text-xs text-indigo-100 mb-3 z-10 relative">FAANG-tier strategies for ATS optimization</p>
-          <button className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white py-2 px-4 rounded-lg text-xs font-bold w-max flex items-center z-10 relative transition-colors border border-white/10">
-            Learn More <span className="ml-1">→</span>
-          </button>
-        </div>
-      </div>
-
-      {/* User Profile */}
-      <div className={`p-4 mx-4 mb-4 rounded-2xl flex items-center justify-between transition-all duration-200 ${darkMode ? 'border border-gray-700 bg-gray-800/50' : 'border border-slate-100 bg-white'}`}>
-        <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center shrink-0 text-white font-bold text-sm">
-            {initial}
-          </div>
-          <div>
-            <p className={`text-sm font-bold leading-tight ${darkMode ? 'text-white' : 'text-slate-800'}`}>{user?.name || 'User'}</p>
-            <p className={`text-[10px] font-medium uppercase tracking-wider ${darkMode ? 'text-indigo-400' : 'text-indigo-500'}`}>{user?.tier || 'Free'} Member</p>
-          </div>
-        </div>
-        <button 
+        {/* Logout Button */}
+        <button
           onClick={logout}
-          className={`p-1.5 rounded-lg transition-colors cursor-pointer ${darkMode ? 'hover:bg-red-500/10 text-gray-400 hover:text-red-400' : 'hover:bg-red-50 text-slate-400 hover:text-red-600'}`}
           title="Logout"
+          className="h-10 w-10 rounded-full flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 transition-all duration-150 cursor-pointer"
         >
           <LogOut size={16} />
         </button>
       </div>
+
     </aside>
   );
 };

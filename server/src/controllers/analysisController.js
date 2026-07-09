@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Analysis = require('../models/Analysis');
 const { extractResumeText } = require('../services/parsing/resumeExtractor');
 const { extractStructuredResume, extractStructuredJD } = require('../services/parsing/localExtractor');
@@ -555,6 +556,102 @@ exports.rescoreAnalysis = async (req, res) => {
       analysisId: analysisDoc._id,
       data: analysisDoc,
       points: global.USER_POINTS[userId]
+    });
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.getAnalyticsSummary = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const dbConnected = mongoose.connection.readyState === 1;
+
+    let analyses;
+    if (dbConnected) {
+      analyses = await Analysis.find({ userId }).sort({ createdAt: 1 });
+    } else {
+      analyses = Object.values(global.EXAM_MEMORY_STORE)
+        .filter(a => String(a.userId) === String(userId))
+        .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    }
+
+    if (analyses.length === 0) {
+      return res.status(200).json({
+        success: true,
+        count: 0,
+        summary: null
+      });
+    }
+
+    // Compute Summary Stats
+    const count = analyses.length;
+    let totalOverall = 0;
+    let totalAts = 0;
+    let totalSkills = 0;
+    let totalExp = 0;
+    let totalProj = 0;
+    let totalForm = 0;
+
+    const missingSkillsMap = {};
+
+    analyses.forEach(a => {
+      totalOverall += a.scores?.overallScore || 0;
+      totalAts += a.scores?.atsScore || 0;
+      totalSkills += a.scores?.breakdown?.skills || 0;
+      totalExp += a.scores?.breakdown?.experience || 0;
+      totalProj += a.scores?.breakdown?.projects || 0;
+      totalForm += a.scores?.breakdown?.formatting || 0;
+
+      // Missing Skills aggregation
+      const missing = a.suggestions?.missingSkills || [];
+      missing.forEach(skill => {
+        const key = skill.trim();
+        if (key) {
+          if (!missingSkillsMap[key]) {
+            missingSkillsMap[key] = { skill: key, count: 0 };
+          }
+          missingSkillsMap[key].count++;
+        }
+      });
+    });
+
+    // Sort missing skills by frequency count descending
+    const sortedMissingSkills = Object.values(missingSkillsMap)
+      .sort((a, b) => b.count - a.count);
+
+    // Compute improvement rate (latest - first)
+    const firstScore = analyses[0].scores?.overallScore || 0;
+    const latestScore = analyses[count - 1].scores?.overallScore || 0;
+    const improvementRate = latestScore - firstScore;
+
+    // Format historical trend line
+    const historyTrend = analyses.map((a, idx) => ({
+      name: `v${idx + 1}.0`,
+      score: a.scores?.overallScore || 0,
+      ats: a.scores?.atsScore || 0,
+      date: new Date(a.createdAt).toLocaleDateString(),
+    }));
+
+    res.status(200).json({
+      success: true,
+      count,
+      summary: {
+        avgOverallScore: Math.round(totalOverall / count),
+        avgAtsScore: Math.round(totalAts / count),
+        avgBreakdown: {
+          skills: Math.round(totalSkills / count),
+          experience: Math.round(totalExp / count),
+          projects: Math.round(totalProj / count),
+          formatting: Math.round(totalForm / count)
+        },
+        firstScore,
+        latestScore,
+        improvementRate,
+        mostCommonMissingSkills: sortedMissingSkills.slice(0, 10),
+        historyTrend
+      }
     });
 
   } catch (error) {

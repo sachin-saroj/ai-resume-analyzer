@@ -5,52 +5,43 @@ const Navbar = () => {
   const { darkMode, toggleTheme } = useTheme();
 
   return (
-    <header className={`h-20 flex items-center justify-between px-8 transition-colors duration-300 ${darkMode ? 'bg-transparent' : 'bg-transparent'}`}>
+    <header className="h-16 flex items-center justify-between px-8 bg-transparent">
       <div className="flex-1"></div>
 
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-3">
         {/* Search */}
         <div className="relative">
-          <Search className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-gray-500' : 'text-slate-400'}`} size={16} />
+          <div className="absolute left-2.5 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
+            <Search className="text-slate-400" size={10} />
+          </div>
           <input
             type="text"
             placeholder="Search analyses..."
-            className={`pl-10 pr-4 py-2.5 rounded-full text-sm border-none outline-none w-64 font-medium transition-colors duration-300
-              ${darkMode
-                ? 'bg-gray-800 text-gray-200 placeholder:text-gray-500 shadow-[0_2px_10px_rgba(0,0,0,0.2)] focus:ring-2 focus:ring-indigo-500/30'
-                : 'bg-white text-slate-600 placeholder:text-slate-400 shadow-[0_2px_10px_rgba(0,0,0,0.02)] focus:ring-2 focus:ring-indigo-100'
-              }`}
+            className="pl-9 pr-4 py-2 rounded-lg text-xs border border-slate-200 outline-none w-60 font-medium bg-white text-slate-700 placeholder:text-slate-400 shadow-sm focus:ring-1 focus:ring-slate-400 transition-all duration-150"
           />
         </div>
 
         {/* Dark/Light Toggle */}
         <button
           onClick={toggleTheme}
-          className={`h-10 w-10 flex items-center justify-center rounded-full transition-all duration-300 relative overflow-hidden
-            ${darkMode
-              ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700 shadow-[0_2px_10px_rgba(0,0,0,0.2)]'
-              : 'bg-white text-indigo-500 hover:text-indigo-600 shadow-[0_2px_10px_rgba(0,0,0,0.02)]'
-            }`}
+          className="h-8 w-8 flex items-center justify-center rounded-full bg-white text-slate-600 hover:text-slate-900 border border-slate-200 hover:bg-slate-50 shadow-sm transition-all duration-150 relative"
           title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
         >
-          {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+          {darkMode ? <Sun size={14} /> : <Moon size={14} />}
         </button>
 
         {/* Notification */}
-        <button className={`h-10 w-10 flex items-center justify-center rounded-full transition-colors relative
-          ${darkMode
-            ? 'bg-gray-800 text-gray-400 hover:text-indigo-400 shadow-[0_2px_10px_rgba(0,0,0,0.2)]'
-            : 'bg-white text-slate-400 hover:text-indigo-600 shadow-[0_2px_10px_rgba(0,0,0,0.02)]'
-          }`}
-        >
-          <Bell size={18} />
-          <span className="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border-2 border-white dark:border-gray-800"></span>
+        <button className="h-8 w-8 flex items-center justify-center rounded-full bg-white text-slate-500 hover:text-slate-800 border border-slate-200 hover:bg-slate-50 shadow-sm transition-all duration-150 relative">
+          <Bell size={14} />
+          <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 bg-slate-900 rounded-full border border-white"></span>
         </button>
 
         {/* Upload Button */}
-        <button className="flex items-center space-x-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-5 py-2.5 rounded-full transition-all duration-300 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-[1.02]">
-          <UploadCloud size={18} />
-          <span className="text-sm font-semibold">Post Resume</span>
+        <button className="flex items-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white pl-2.5 pr-4 py-1.5 rounded-lg transition-all duration-150 shadow-sm text-xs font-bold">
+          <div className="h-5 w-5 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+            <UploadCloud size={10} className="text-white" />
+          </div>
+          <span className="font-semibold">Post Resume</span>
         </button>
       </div>
     </header>

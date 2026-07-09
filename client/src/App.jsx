@@ -7,6 +7,10 @@ import Navbar from './components/layout/Navbar';
 import Dashboard from './pages/Dashboard';
 import History from './pages/History';
 import Auth from './pages/Auth';
+import Analytics from './pages/Analytics';
+import Schedule from './pages/Schedule';
+import Help from './pages/Help';
+import Settings from './pages/Settings';
 import { Component } from 'react';
 
 // Error Boundary to prevent full white screen crashes
@@ -54,9 +58,9 @@ function ProtectedRoute({ children }) {
   if (loading) {
     return (
       <div className={`flex flex-col items-center justify-center h-screen transition-colors duration-300 ${
-        darkMode ? 'bg-gray-950 text-white' : 'bg-[#f4f7fe] text-gray-800'
+        darkMode ? 'bg-gray-950 text-white' : 'bg-neutral-light text-gray-800'
       }`}>
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"></div>
         <p className="mt-4 text-xs font-bold tracking-widest uppercase opacity-75 animate-pulse">Verifying Credentials...</p>
       </div>
     );
@@ -76,7 +80,7 @@ function AuthRoute({ children }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-950">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"></div>
       </div>
     );
   }
@@ -95,7 +99,7 @@ function AppContent() {
   return (
     <Router>
       <div className={`flex h-screen font-sans overflow-hidden transition-colors duration-300 ${
-        darkMode ? 'bg-gray-950 text-gray-100' : 'bg-[#f4f7fe] text-gray-800'
+        darkMode ? 'bg-gray-950 text-gray-100' : 'bg-neutral-light text-gray-800'
       }`}>
         {user && <Sidebar />}
         <div className="flex flex-col flex-1 overflow-hidden">
@@ -121,22 +125,22 @@ function AppContent() {
                   } />
                   <Route path="/analytics" element={
                     <ProtectedRoute>
-                      <Dashboard />
+                      <Analytics />
                     </ProtectedRoute>
                   } />
                   <Route path="/schedule" element={
                     <ProtectedRoute>
-                      <Dashboard />
+                      <Schedule />
                     </ProtectedRoute>
                   } />
                   <Route path="/help" element={
                     <ProtectedRoute>
-                      <Dashboard />
+                      <Help />
                     </ProtectedRoute>
                   } />
                   <Route path="/settings" element={
                     <ProtectedRoute>
-                      <Dashboard />
+                      <Settings />
                     </ProtectedRoute>
                   } />
                   <Route path="*" element={<Navigate to="/" replace />} />

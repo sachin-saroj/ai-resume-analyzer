@@ -65,7 +65,7 @@ const Auth = () => {
 
   return (
     <div className={`min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-500 ${
-      darkMode ? 'bg-[#030712] text-gray-100' : 'bg-[#f4f7fe] text-gray-800'
+      darkMode ? 'bg-gray-950 text-gray-100' : 'bg-neutral-light text-gray-800'
     }`}>
       {/* Background Decorative Blobs */}
       <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 blur-[120px] pointer-events-none"></div>
@@ -173,7 +173,7 @@ const Auth = () => {
                         className={`w-full pl-12 pr-4 py-3.5 rounded-2xl border-none outline-none font-semibold text-sm transition-all duration-300
                           ${darkMode 
                             ? 'bg-gray-900 text-gray-100 placeholder:text-gray-600 focus:ring-2 focus:ring-indigo-500/40 shadow-inner' 
-                            : 'bg-[#f4f7fe] text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500/10'
+                            : 'bg-neutral-light text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500/10'
                           }`}
                       />
                     </div>
@@ -194,7 +194,7 @@ const Auth = () => {
                     className={`w-full pl-12 pr-4 py-3.5 rounded-2xl border-none outline-none font-semibold text-sm transition-all duration-300
                       ${darkMode 
                         ? 'bg-gray-900 text-gray-100 placeholder:text-gray-600 focus:ring-2 focus:ring-indigo-500/40 shadow-inner' 
-                        : 'bg-[#f4f7fe] text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500/10'
+                        : 'bg-neutral-light text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500/10'
                       }`}
                   />
                 </div>
@@ -213,7 +213,7 @@ const Auth = () => {
                     className={`w-full pl-12 pr-12 py-3.5 rounded-2xl border-none outline-none font-semibold text-sm transition-all duration-300
                       ${darkMode 
                         ? 'bg-gray-900 text-gray-100 placeholder:text-gray-600 focus:ring-2 focus:ring-indigo-500/40 shadow-inner' 
-                        : 'bg-[#f4f7fe] text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500/10'
+                        : 'bg-neutral-light text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-500/10'
                       }`}
                   />
                   <button
@@ -230,7 +230,7 @@ const Auth = () => {
                 id="auth-submit-btn"
                 type="submit"
                 disabled={loading}
-                className="w-full mt-6 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-4 rounded-2xl transition-all duration-300 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 active:scale-[0.98] flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
+                className="w-full mt-6 bg-[#FF6B4A] hover:bg-[#E25A38] text-white font-bold py-4 rounded-full transition-all duration-300 shadow-lg shadow-[#FF6B4A]/25 hover:shadow-[#FF6B4A]/40 active:scale-[0.98] flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
               >
                 {loading ? (
                   <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

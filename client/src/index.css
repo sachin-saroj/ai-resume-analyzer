@@ -2,17 +2,65 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
+@theme {
+  --color-accent: #18181b;
+  --color-accent-hover: #09090b;
+  --color-accent-light: #f4f4f5;
+  --color-neutral-light: #f5f5f7;
+  --color-neutral-dark: #09090b;
+
+  /* Leverage mapping: map indigo, purple, and slate to our new tokens */
+  --color-indigo-50: #f4f4f5;
+  --color-indigo-100: #e4e4e7;
+  --color-indigo-200: #d4d4d8;
+  --color-indigo-300: #a1a1aa;
+  --color-indigo-400: #71717a;
+  --color-indigo-500: #18181b;
+  --color-indigo-600: #09090b;
+  --color-indigo-700: #000000;
+  --color-indigo-800: #000000;
+  --color-indigo-900: #000000;
+  --color-indigo-950: #000000;
+
+  --color-purple-50: #f4f4f5;
+  --color-purple-100: #e4e4e7;
+  --color-purple-200: #d4d4d8;
+  --color-purple-300: #a1a1aa;
+  --color-purple-400: #71717a;
+  --color-purple-500: #18181b;
+  --color-purple-600: #09090b;
+  --color-purple-700: #000000;
+  --color-purple-800: #000000;
+  --color-purple-900: #000000;
+  --color-purple-950: #000000;
+
+  --color-slate-900: #09090b;
+  --color-gray-950: #09090b;
+  --color-gray-900: #18181b;
+  --color-gray-800: #27272a;
+  --color-gray-700: #3f3f46;
+  --color-gray-600: #52525b;
+  --color-gray-500: #71717a;
+
+  --animate-marquee: marquee 30s linear infinite;
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+}
+
 body {
-  background-color: #f4f7fe;
-  color: #1e293b;
+  background-color: #f5f5f7;
+  color: #09090b;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 html.dark body {
-  background-color: #030712;
-  color: #e5e7eb;
+  background-color: #0A0A0B;
+  color: #FAFAF8;
 }
 
 /* Custom scrollbar */
@@ -61,7 +109,7 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 
 /* Selection color */
 ::selection {
-  background-color: #6366f1;
+  background-color: #FF6B4A;
   color: white;
 }
 
