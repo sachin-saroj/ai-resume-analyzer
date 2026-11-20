@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { AnalysisProvider } from './context/AnalysisContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import Sidebar from './components/layout/Sidebar';
 import Navbar from './components/layout/Navbar';
 import Dashboard from './pages/Dashboard';
 import History from './pages/History';
@@ -11,7 +10,9 @@ import Analytics from './pages/Analytics';
 import Schedule from './pages/Schedule';
 import Help from './pages/Help';
 import Settings from './pages/Settings';
-import { Component } from 'react';
+import ScrollProgress from './components/ui/ScrollProgress';
+import { Component, useEffect } from 'react';
+import Lenis from 'lenis';
 
 // Error Boundary to prevent full white screen crashes
 class ErrorBoundary extends Component {
@@ -93,62 +94,81 @@ function AuthRoute({ children }) {
 }
 
 function AppContent() {
-  const { darkMode } = useTheme();
   const { user } = useAuth();
+
+  useEffect(() => {
+    let lenisInstance;
+    try {
+      lenisInstance = new Lenis({
+        duration: 1.1,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+      });
+
+      function raf(time) {
+        lenisInstance?.raf(time);
+        requestAnimationFrame(raf);
+      }
+
+      const id = requestAnimationFrame(raf);
+      return () => {
+        cancelAnimationFrame(id);
+        lenisInstance?.destroy();
+      };
+    } catch (e) {
+      console.warn('Lenis initialization skipped:', e);
+    }
+  }, []);
 
   return (
     <Router>
-      <div className={`flex h-screen font-sans overflow-hidden transition-colors duration-300 ${
-        darkMode ? 'bg-gray-950 text-gray-100' : 'bg-neutral-light text-gray-800'
-      }`}>
-        {user && <Sidebar />}
-        <div className="flex flex-col flex-1 overflow-hidden">
-          {user && <Navbar />}
-          <main className={`flex-1 overflow-y-auto ${user ? 'px-8 py-6' : 'p-0'}`}>
-            <div className={user ? 'max-w-[1400px] mx-auto' : 'h-full w-full'}>
-              <ErrorBoundary>
-                <Routes>
-                  <Route path="/auth" element={
-                    <AuthRoute>
-                      <Auth />
-                    </AuthRoute>
-                  } />
-                  <Route path="/" element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/history" element={
-                    <ProtectedRoute>
-                      <History />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/analytics" element={
-                    <ProtectedRoute>
-                      <Analytics />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/schedule" element={
-                    <ProtectedRoute>
-                      <Schedule />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/help" element={
-                    <ProtectedRoute>
-                      <Help />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/settings" element={
-                    <ProtectedRoute>
-                      <Settings />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
-              </ErrorBoundary>
-            </div>
-          </main>
-        </div>
+      <ScrollProgress />
+      <div className="min-h-screen font-sans transition-colors duration-300 flex flex-col bg-[var(--background)] text-[var(--text-main)]">
+        {user && <Navbar />}
+        <main className={`flex-1 w-full ${user ? 'pb-16' : ''}`}>
+          <div className={user ? 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8' : 'h-full w-full'}>
+            <ErrorBoundary>
+              <Routes>
+                <Route path="/auth" element={
+                  <AuthRoute>
+                    <Auth />
+                  </AuthRoute>
+                } />
+                <Route path="/" element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/history" element={
+                  <ProtectedRoute>
+                    <History />
+                  </ProtectedRoute>
+                } />
+                <Route path="/analytics" element={
+                  <ProtectedRoute>
+                    <Analytics />
+                  </ProtectedRoute>
+                } />
+                <Route path="/schedule" element={
+                  <ProtectedRoute>
+                    <Schedule />
+                  </ProtectedRoute>
+                } />
+                <Route path="/help" element={
+                  <ProtectedRoute>
+                    <Help />
+                  </ProtectedRoute>
+                } />
+                <Route path="/settings" element={
+                  <ProtectedRoute>
+                    <Settings />
+                  </ProtectedRoute>
+                } />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </ErrorBoundary>
+          </div>
+        </main>
       </div>
     </Router>
   );
