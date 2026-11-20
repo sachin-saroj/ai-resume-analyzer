@@ -1,0 +1,34 @@
+{
+  "url": "http://localhost:5173/",
+  "timestamp": "2026-11-20T07:27:59.479Z",
+  "results": [
+    {
+      "viewport": "desktop-1440",
+      "width": 1440,
+      "height": 900,
+      "path": "C:\\Users\\Asus\\OneDrive\\Documents\\ai-resume-analyzer\\screenshots\\desktop-1440.png",
+      "status": "CAPTURED"
+    },
+    {
+      "viewport": "laptop-1024",
+      "width": 1024,
+      "height": 768,
+      "path": "C:\\Users\\Asus\\OneDrive\\Documents\\ai-resume-analyzer\\screenshots\\laptop-1024.png",
+      "status": "CAPTURED"
+    },
+    {
+      "viewport": "tablet-768",
+      "width": 768,
+      "height": 1024,
+      "path": "C:\\Users\\Asus\\OneDrive\\Documents\\ai-resume-analyzer\\screenshots\\tablet-768.png",
+      "status": "CAPTURED"
+    },
+    {
+      "viewport": "mobile-390",
+      "width": 390,
+      "height": 844,
+      "path": "C:\\Users\\Asus\\OneDrive\\Documents\\ai-resume-analyzer\\screenshots\\mobile-390.png",
+      "status": "CAPTURED"
+    }
+  ]
+}
