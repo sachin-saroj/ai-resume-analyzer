@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, HelpCircle, ChevronDown, ChevronUp, Mail, AlertTriangle } from 'lucide-react';
+import { Link005 } from '../components/ui/skiper-ui/skiper40';
+import SpotlightCard from '../components/ui/SpotlightCard';
 
 const Help = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -38,63 +40,66 @@ const Help = () => {
     setExpandedIndex(expandedIndex === idx ? null : idx);
   };
 
-  const card = 'bg-white rounded-2xl shadow-sm border border-slate-100/50';
+  const card = 'bg-white/95 dark:bg-[#151d16]/95 backdrop-blur-xl rounded-[28px] shadow-sm border border-black/10 dark:border-white/10';
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4 pb-16">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 pb-20 font-geometric">
       
       {/* Header */}
       <div>
-        <h1 className="text-xl font-bold mb-0.5 text-slate-800">Help & Support</h1>
-        <p className="text-xs font-medium text-slate-400">Find answers and get help with the career optimization platform</p>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 text-[10px] font-black uppercase tracking-wider text-[#c27838] mb-2">
+          <span>✦ Knowledge Base</span>
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-black text-[#141c15] dark:text-white tracking-tight">Help & Documentation</h1>
+        <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400 mt-1">Frequently asked questions, scoring methodology, and optimization best practices</p>
       </div>
 
       {/* Search FAQ */}
       <div className="relative">
-        <div className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 rounded-full bg-slate-50 flex items-center justify-center border border-slate-100">
-          <Search className="text-slate-400" size={10} />
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-[#f6f8f5] dark:bg-white/10 flex items-center justify-center border border-black/5 dark:border-white/10">
+          <Search className="text-[#c27838]" size={12} />
         </div>
         <input
           type="text"
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
-          placeholder="Filter FAQs by keyword..."
-          className="w-full pl-10 pr-4 py-2 rounded-lg text-xs border border-slate-200 outline-none font-medium bg-white text-slate-700 placeholder:text-slate-400 shadow-sm focus:ring-1 focus:ring-slate-400 transition-all"
+          placeholder="Filter FAQs by keyword (e.g. ATS, score, export, privacy)..."
+          className="w-full pl-12 pr-4 py-3 rounded-full text-xs border border-slate-200 dark:border-white/10 outline-none focus-visible:ring-1 focus-visible:ring-[#c27838] font-medium bg-white dark:bg-[#151d16] text-[#141c15] dark:text-white placeholder:text-slate-400 shadow-sm transition-all"
         />
       </div>
 
       {/* FAQs List Card */}
-      <div className={`${card} p-4`}>
-        <div className="flex items-center gap-2 mb-4 border-b border-slate-50 pb-2">
-          <div className="h-7 w-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 shrink-0">
-            <HelpCircle size={13} className="text-slate-500" />
+      <div className={`${card} p-6`}>
+        <div className="flex items-center gap-2.5 mb-5 border-b border-black/5 dark:border-white/5 pb-3">
+          <div className="h-8 w-8 rounded-full bg-[#f6f8f5] dark:bg-white/10 flex items-center justify-center text-slate-700 dark:text-white shrink-0">
+            <HelpCircle size={14} className="text-[#c27838]" />
           </div>
-          <h3 className="text-xs font-bold text-slate-800">Frequently Asked Questions</h3>
+          <h3 className="text-sm font-black text-[#141c15] dark:text-white">Frequently Asked Questions</h3>
         </div>
 
         {filteredFaqs.length === 0 ? (
-          <div className="text-center py-8 text-xs text-slate-400 font-medium flex flex-col items-center justify-center gap-1">
-            <AlertTriangle size={16} className="text-slate-300" />
+          <div className="text-center py-10 text-xs text-slate-400 font-bold flex flex-col items-center justify-center gap-2">
+            <AlertTriangle size={18} className="text-[#c27838]" />
             <span>No FAQ entries found matching "{searchQuery}"</span>
           </div>
         ) : (
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-black/5 dark:divide-white/5">
             {filteredFaqs.map((faq, idx) => {
               const isExpanded = expandedIndex === idx;
               return (
-                <div key={idx} className="py-3 first:pt-0 last:pb-0">
+                <div key={idx} className="py-4 first:pt-0 last:pb-0">
                   <button
                     onClick={() => toggleExpand(idx)}
                     className="w-full flex items-center justify-between text-left cursor-pointer"
                   >
-                    <div className="flex items-center gap-2.5 min-w-0 pr-4">
-                      <div className="h-6 w-6 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 shrink-0 border border-slate-100/50">
-                        <HelpCircle size={11} />
+                    <div className="flex items-center gap-3 min-w-0 pr-4">
+                      <div className="h-6 w-6 rounded-full bg-[#f6f8f5] dark:bg-white/10 flex items-center justify-center text-slate-400 shrink-0 border border-black/5 dark:border-white/10">
+                        <HelpCircle size={11} className="text-[#c27838]" />
                       </div>
-                      <p className="text-xs font-bold text-slate-800 leading-normal truncate">{faq.q}</p>
+                      <p className="text-xs font-black text-[#141c15] dark:text-white leading-normal truncate">{faq.q}</p>
                     </div>
-                    <div className="h-6 w-6 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 border border-slate-100/50 shrink-0">
-                      {isExpanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                    <div className="h-7 w-7 rounded-full bg-[#f6f8f5] dark:bg-white/10 flex items-center justify-center text-slate-500 dark:text-slate-400 border border-black/5 dark:border-white/10 shrink-0">
+                      {isExpanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
                     </div>
                   </button>
 
@@ -104,9 +109,9 @@ const Help = () => {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="overflow-hidden mt-2.5 pl-8 text-[11px] text-slate-500 leading-relaxed font-medium"
+                        className="overflow-hidden mt-3 pl-9 text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium"
                       >
-                        <p className="bg-slate-50/55 p-3 rounded-lg border border-slate-100/60">{faq.a}</p>
+                        <p className="bg-[#f6f8f5] dark:bg-white/5 p-4 rounded-2xl border border-black/5 dark:border-white/5">{faq.a}</p>
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -118,23 +123,23 @@ const Help = () => {
       </div>
 
       {/* Support Card */}
-      <div className={`${card} p-4 flex items-center justify-between`}>
+      <SpotlightCard className={`${card} p-6 flex items-center justify-between flex-wrap gap-4`}>
         <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 shrink-0">
-            <Mail size={14} />
+          <div className="h-9 w-9 rounded-full bg-[#f6f8f5] dark:bg-white/10 flex items-center justify-center text-[#c27838] shrink-0">
+            <Mail size={16} />
           </div>
           <div>
-            <h4 className="text-xs font-bold text-slate-800">Still need help?</h4>
-            <p className="text-[10px] text-slate-400 font-medium">Reach out directly to our engineering support desk.</p>
+            <h4 className="text-xs font-black text-[#141c15] dark:text-white">Still need help or custom integrations?</h4>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Reach out directly to our engineering support desk.</p>
           </div>
         </div>
-        <a
-          href="mailto:support@resumeai.pro?subject=ResumeAI Support Inquiry"
-          className="bg-slate-900 hover:bg-black text-white px-3 py-1.5 rounded-lg text-[10px] font-bold shadow-sm transition-colors cursor-pointer flex items-center gap-1"
+        <Link005
+          href="mailto:support@resumeiq.pro?subject=ResumeIQ Support Inquiry"
+          className="bg-[#141c15] hover:bg-black dark:bg-white dark:hover:bg-slate-100 text-white dark:text-[#141c15] px-6 py-2.5 rounded-full text-xs font-black shadow-md transition-colors cursor-pointer"
         >
-          <span>Email Support</span>
-        </a>
-      </div>
+          <span>Email Engineering</span>
+        </Link005>
+      </SpotlightCard>
 
     </motion.div>
   );
