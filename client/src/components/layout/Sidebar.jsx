@@ -1,6 +1,5 @@
 import { Home, FileText, BarChart3, Calendar, HelpCircle, Settings, LogOut, Zap } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
-import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = () => {
